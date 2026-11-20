@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,8 +44,10 @@ fun BandGainSlider(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        val gain = sliderPosition * 10f
+        val formattedGain = if (gain > 0f) "+%.1f".format(gain) else "%.1f".format(gain)
         SliderText(
-            "%.1f".format(sliderPosition * 10f)
+            formattedGain
         )
         Slider(
             value = sliderPosition,
@@ -96,6 +99,7 @@ fun SliderText(
     Text(
         text = text,
         modifier = modifier,
-        fontSize = 12.sp
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Medium,
     )
 }
