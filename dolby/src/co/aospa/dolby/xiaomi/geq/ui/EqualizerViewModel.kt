@@ -115,7 +115,7 @@ class EqualizerViewModel(
         // Ensure we don't have another preset with the same name
         return if (
             _presets.value
-            .any { it.name!!.equals(name.trim(), ignoreCase = true) }
+            .any { it.name?.equals(name.trim(), ignoreCase = true) == true }
         ) {
             PresetNameValidationError.NAME_EXISTS
         } else if (name.length > 50) {
