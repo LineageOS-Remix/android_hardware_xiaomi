@@ -16,9 +16,14 @@ class DolbyTileService : TileService() {
     private val dolbyController by lazy { DolbyController.getInstance(applicationContext) }
 
     override fun onStartListening() {
+        val isDsOn = dolbyController.dsOn
         qsTile.apply {
-            state = if (dolbyController.dsOn) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
-            subtitle = dolbyController.getProfileName() ?: getString(R.string.dolby_unknown)
+            state = if (isDsOn) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+            subtitle = if (isDsOn) {
+                dolbyController.getProfileName() ?: getString(R.string.dolby_unknown)
+            } else {
+                getString(R.string.dolby_off)
+            }
             updateTile()
         }
         super.onStartListening()
@@ -26,9 +31,15 @@ class DolbyTileService : TileService() {
 
     override fun onClick() {
         val isDsOn = dolbyController.dsOn
-        dolbyController.setDsOnAndPersist(!isDsOn) // toggle
+        val newDsOn = !isDsOn
+        dolbyController.setDsOnAndPersist(newDsOn) // toggle
         qsTile.apply {
-            state = if (isDsOn) Tile.STATE_INACTIVE else Tile.STATE_ACTIVE
+            state = if (newDsOn) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+            subtitle = if (newDsOn) {
+                dolbyController.getProfileName() ?: getString(R.string.dolby_unknown)
+            } else {
+                getString(R.string.dolby_off)
+            }
             updateTile()
         }
         super.onClick()
