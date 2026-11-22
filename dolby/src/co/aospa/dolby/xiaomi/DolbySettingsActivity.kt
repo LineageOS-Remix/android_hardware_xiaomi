@@ -20,6 +20,14 @@ class DolbySettingsActivity : CollapsingToolbarBaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        try {
+            dolbyController = DolbyController.getInstance(this)
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "Failed to initialize DolbyController", e)
+            Toast.makeText(this, R.string.dolby_unknown, Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
         supportFragmentManager
             .beginTransaction()
             .replace(
@@ -28,7 +36,6 @@ class DolbySettingsActivity : CollapsingToolbarBaseActivity() {
                 TAG
             )
             .commit()
-        dolbyController = DolbyController.getInstance(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
